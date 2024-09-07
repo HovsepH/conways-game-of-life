@@ -147,7 +147,6 @@ public sealed class GameOfLifeSequentialVersion
         return aliveNeighbours;
     }
 
-
     private bool IsWithinArrayBoundsRow(int rowNumber)
     {
         if (rowNumber >= 0 && rowNumber < this.grid.GetLength(0))

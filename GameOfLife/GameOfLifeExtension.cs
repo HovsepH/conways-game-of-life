@@ -58,12 +58,8 @@ public static class GameOfLifeExtension
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <param name="generations"/> is less than or equal to 0.</exception>
     public static async Task SimulateAsync(this GameOfLifeParallelVersion? game, int generations, TextWriter? writer, char aliveCell, char deadCell)
     {
-        ArgumentNullException.ThrowIfNull(game);
-
-        ArgumentNullException.ThrowIfNull(writer);
-
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(generations);
-
+        ThrowError(game, writer, generations);
+#pragma warning disable
         while (game.Generation < generations)
         {
             var grid = game.CurrentGeneration;
@@ -80,5 +76,15 @@ public static class GameOfLifeExtension
 
             game.NextGeneration();
         }
+#pragma warning enable
+    }
+
+    private static void ThrowError(GameOfLifeParallelVersion? game, TextWriter? writer, int generations)
+    {
+        ArgumentNullException.ThrowIfNull(game);
+
+        ArgumentNullException.ThrowIfNull(writer);
+
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(generations);
     }
 }
