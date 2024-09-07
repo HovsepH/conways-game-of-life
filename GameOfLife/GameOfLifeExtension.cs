@@ -19,7 +19,28 @@ public static class GameOfLifeExtension
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <param name="generations"/> is less than or equal to 0.</exception>
     public static void Simulate(this GameOfLifeSequentialVersion? game, int generations, TextWriter? writer, char aliveCell, char deadCell)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(game);
+
+        ArgumentNullException.ThrowIfNull(writer);
+
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(generations);
+
+        while (game.Generation < generations)
+        {
+            var grid = game.CurrentGeneration;
+
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    writer.Write(grid[i, j] ? aliveCell : deadCell);
+                }
+
+                writer.WriteLine();
+            }
+
+            game.NextGeneration();
+        }
     }
 
     /// <summary>
@@ -37,6 +58,27 @@ public static class GameOfLifeExtension
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <param name="generations"/> is less than or equal to 0.</exception>
     public static async Task SimulateAsync(this GameOfLifeParallelVersion? game, int generations, TextWriter? writer, char aliveCell, char deadCell)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(game);
+
+        ArgumentNullException.ThrowIfNull(writer);
+
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(generations);
+
+        while (game.Generation < generations)
+        {
+            var grid = game.CurrentGeneration;
+
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    await writer.WriteAsync(grid[i, j] ? aliveCell : deadCell);
+                }
+
+                await writer.WriteLineAsync();
+            }
+
+            game.NextGeneration();
+        }
     }
 }
